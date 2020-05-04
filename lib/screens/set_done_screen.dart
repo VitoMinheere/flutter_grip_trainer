@@ -1,25 +1,22 @@
 import 'package:flutter/material.dart';
 
+import 'package:provider/provider.dart';
+
+import 'package:grip_trainer/data/categories.dart';
 import 'package:grip_trainer/constants/strings.dart' as StringConst;
 
 class SetDoneScreen extends StatefulWidget {
-  //final int repsCompleted;
-  final int secondsCompleted;
-
-  SetDoneScreen({this.secondsCompleted});
+  static String id = 'SetDoneScreen';
 
   @override
-  _SetDoneScreenState createState() =>
-      _SetDoneScreenState(this.secondsCompleted);
+  _SetDoneScreenState createState() => _SetDoneScreenState();
 }
 
 class _SetDoneScreenState extends State<SetDoneScreen> {
-  int value;
-
-  _SetDoneScreenState(this.value);
-
   @override
   Widget build(BuildContext context) {
+    int value =
+        Provider.of<GripCategoryData>(context, listen: false).secondsDone;
     return Scaffold(
       appBar: AppBar(
         title: Text(StringConst.SECONDS_COMPLETED),
@@ -29,7 +26,6 @@ class _SetDoneScreenState extends State<SetDoneScreen> {
         alignment: Alignment.center,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          //crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -92,7 +88,9 @@ class _SetDoneScreenState extends State<SetDoneScreen> {
                     icon: null,
                     onPressed: () {
                       setState(() {
-                        value = widget.secondsCompleted;
+                        value = Provider.of<GripCategoryData>(context,
+                                listen: false)
+                            .secondsDone;
                       });
                     }),
                 FloatingActionButton.extended(

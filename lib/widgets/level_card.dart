@@ -1,26 +1,28 @@
 import 'package:flutter/material.dart';
 
+import 'package:grip_trainer/data/categories.dart';
+import 'package:provider/provider.dart';
+
 import 'package:grip_trainer/constants/theme.dart';
 import 'package:grip_trainer/data/categories.dart';
-import 'package:grip_trainer/widgets/timer_widget.dart';
 
 class LevelCard extends StatelessWidget {
   final Level currentLevel;
 
   LevelCard({@required this.currentLevel});
 
+  //TODO Load the currentlevel from the provider
   @override
   Widget build(BuildContext context) {
+    currentLevel =
+        Provider.of<GripCategoryData>(context, listen: false).currentLevel;
+
     return InkWell(
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) {
-              return CountDownTimer(currentLevel.secondsToPass);
-            },
-          ),
-        );
+        Provider.of<GripCategoryData>(context, listen: false)
+            .setSecondsToPass(seconds);
+
+        Navigator.pushNamed(context, 'TimerScreen');
       },
       child: Card(
           color: Colors.grey[600],

@@ -2,15 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:grip_trainer/widgets/level_card.dart';
 
 import 'package:grip_trainer/data/categories.dart';
+import 'package:provider/provider.dart';
 
 class LevelsScreen extends StatelessWidget {
-  final GripCategory category;
-
-  LevelsScreen(this.category);
+  static String id = 'LevelsScreen';
 
   @override
   Widget build(BuildContext context) {
-    List levels = category.levels;
+    GripCategory category =
+        Provider.of<GripCategoryData>(context, listen: false)
+            .currentGripCategory;
 
     return Scaffold(
       appBar: AppBar(title: Text(category.name)),
@@ -18,9 +19,9 @@ class LevelsScreen extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: Container(
           child: ListView.builder(
-            itemCount: levels.length,
+            itemCount: category.levels.length,
             itemBuilder: (context, index) =>
-                LevelCard(currentLevel: levels[index]),
+                LevelCard(currentLevel: category.levels[index]),
           ),
         ),
       ),
