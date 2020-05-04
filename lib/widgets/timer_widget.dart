@@ -3,6 +3,8 @@ import 'dart:math' as math;
 
 import 'package:grip_trainer/constants/strings.dart' as StringConst;
 
+import 'package:grip_trainer/screens/set_done_screen.dart';
+
 class CountDownTimer extends StatefulWidget {
   final int countdownSeconds;
 
@@ -34,6 +36,14 @@ class _CountDownTimerState extends State<CountDownTimer>
     );
     controller.addListener(() {
       if (controller.isCompleted) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) {
+              return SetDoneScreen(secondsCompleted: secondsPassed);
+            },
+          ),
+        );
         print("Timer completed");
       }
     });
@@ -138,7 +148,15 @@ class _CountDownTimerState extends State<CountDownTimer>
                             FloatingActionButton.extended(
                               heroTag: null,
                               onPressed: () {
-                                print("Stopped at " + secondsPassed.toString());
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) {
+                                      return SetDoneScreen(
+                                          secondsCompleted: secondsPassed);
+                                    },
+                                  ),
+                                );
                               },
                               icon: Icon(Icons.stop),
                               label: Text(StringConst.STOP),

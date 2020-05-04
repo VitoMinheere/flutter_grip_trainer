@@ -44,13 +44,6 @@ class MainMenu extends StatelessWidget {
               colour: Colors.grey[800],
             ),
           ),
-
-          // BottomButton(
-          //   buttonTitle: 'RE-CALCULATE',
-          //   onTap: () {
-          //     Navigator.pop(context);
-          //   },
-          // )
         ],
       ),
     );
