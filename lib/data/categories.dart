@@ -60,6 +60,16 @@ class GripCategory {
   List<Level> levels;
 
   GripCategory({this.name, this.image, this.levels});
+
+  int levelsCompleted() {
+    int completed = 0;
+    this.levels.forEach((level) {
+      if (level.completed) {
+        completed++;
+      }
+    });
+    return completed;
+  }
 }
 
 class Level {

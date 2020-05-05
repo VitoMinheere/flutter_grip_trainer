@@ -4,8 +4,6 @@ import 'dart:math';
 import 'package:grip_trainer/data/categories.dart';
 import 'package:grip_trainer/constants/theme.dart';
 
-import 'package:grip_trainer/screens/levels_screen.dart';
-
 class ExerciseCard extends StatelessWidget {
   ExerciseCard(
       {@required this.colour,
@@ -50,17 +48,6 @@ class ExerciseCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    Text(
-                      currentLevel.toString() +
-                          "/" +
-                          category.levels.length.toString(),
-                      style: cardtext,
-                    ),
-                    Icon(Icons.trending_up, color: Colors.white)
-                  ],
-                ),
                 Text(
                   category.name,
                   style: cardtext,
@@ -68,17 +55,26 @@ class ExerciseCard extends StatelessWidget {
                 Row(
                   children: <Widget>[
                     Text(
-                      "0/" +
-                          category.levels[currentLevel - 1].secondsToPass
-                              .toString(),
+                      '${category.levelsCompleted()}/${category.levels.length}',
                       style: cardtext,
                     ),
-                    Icon(
-                      Icons.hourglass_empty,
-                      color: Colors.white,
-                    )
+                    Icon(Icons.trending_up, color: Colors.white)
                   ],
-                )
+                ),
+                // Row(
+                //   children: <Widget>[
+                //     Text(
+                //       "0/" +
+                //           category.levels[currentLevel - 1].secondsToPass
+                //               .toString(),
+                //       style: cardtext,
+                //     ),
+                //     Icon(
+                //       Icons.hourglass_empty,
+                //       color: Colors.white,
+                //     )
+                //   ],
+                // )
               ],
             )
           ],
