@@ -9,12 +9,13 @@ class LevelsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    GripCategory category =
-        Provider.of<GripCategoryData>(context, listen: false)
-            .currentGripCategory;
+    GripCategory category = Provider.of<GripCategoryData>(context, listen: true)
+        .currentGripCategory;
 
     return Scaffold(
-      appBar: AppBar(title: Text(category.name)),
+      appBar: AppBar(
+        title: Text(category.name),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Container(

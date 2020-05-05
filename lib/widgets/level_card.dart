@@ -14,13 +14,15 @@ class LevelCard extends StatelessWidget {
   //TODO Load the currentlevel from the provider
   @override
   Widget build(BuildContext context) {
-    currentLevel =
-        Provider.of<GripCategoryData>(context, listen: false).currentLevel;
+    Level currentLevel = this.currentLevel;
+    //Provider.of<GripCategoryData>(context, listen: false).currentLevel;
 
     return InkWell(
       onTap: () {
         Provider.of<GripCategoryData>(context, listen: false)
-            .setSecondsToPass(seconds);
+            .setCurrentLevel(currentLevel);
+        Provider.of<GripCategoryData>(context, listen: false)
+            .setSecondsToPass(currentLevel.secondsToPass);
 
         Navigator.pushNamed(context, 'TimerScreen');
       },
@@ -35,27 +37,26 @@ class LevelCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       // Text(currentLevel.number.toString()),
-                      Icon(Icons.check_box_outline_blank),
+                      //Icon(Icons.check_box_outline_blank),
+                      Checkbox(value: currentLevel.completed, onChanged: null),
                     ],
                   ),
                   Text(
                     currentLevel.exercise.name,
                     style: cardtext,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                      Text(
-                        currentLevel.setsToPass.toString() +
-                            "x 30/" +
-                            currentLevel.secondsToPass.toString(),
-                        style: cardtext,
-                      ),
-                      Icon(
-                        Icons.hourglass_empty,
-                        color: Colors.white,
-                      )
-                    ],
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  Text(
+                    '${currentLevel.setsToPass}x ${currentLevel.secondsDone}/${currentLevel.secondsToPass}',
+                    style: cardtext,
+                  ),
+                  Icon(
+                    Icons.hourglass_empty,
+                    color: Colors.white,
                   )
                 ],
               )

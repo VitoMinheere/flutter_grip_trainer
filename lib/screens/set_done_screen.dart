@@ -13,10 +13,20 @@ class SetDoneScreen extends StatefulWidget {
 }
 
 class _SetDoneScreenState extends State<SetDoneScreen> {
+  int value;
+  Level currentLevel;
+
+  @override
+  void initState() {
+    super.initState();
+    value = Provider.of<GripCategoryData>(context, listen: false).secondsDone;
+    print("set_done_Screen = " + value.toString());
+    currentLevel =
+        Provider.of<GripCategoryData>(context, listen: false).currentLevel;
+  }
+
   @override
   Widget build(BuildContext context) {
-    int value =
-        Provider.of<GripCategoryData>(context, listen: false).secondsDone;
     return Scaffold(
       appBar: AppBar(
         title: Text(StringConst.SECONDS_COMPLETED),
@@ -43,6 +53,7 @@ class _SetDoneScreenState extends State<SetDoneScreen> {
                   onTap: () {
                     setState(() {
                       value = value + 1;
+                      print("value = " + value.toString());
                     });
                   },
                 ),
@@ -94,7 +105,16 @@ class _SetDoneScreenState extends State<SetDoneScreen> {
                       });
                     }),
                 FloatingActionButton.extended(
-                    heroTag: null, label: Text("Done"), onPressed: null),
+                  heroTag: null,
+                  label: Text("Done"),
+                  onPressed: () {
+                    Provider.of<GripCategoryData>(context, listen: false)
+                        .finishSet(currentLevel, value);
+                    Navigator.popUntil(
+                        context, ModalRoute.withName('LevelsScreen'));
+                    // Navigator.popAndPushNamed(context, 'LevelsScreen');
+                  },
+                ),
               ],
             )
           ],

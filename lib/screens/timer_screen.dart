@@ -20,11 +20,12 @@ class _TimerScreenState extends State<TimerScreen>
 
   String get timerString {
     Duration duration = controller.duration * controller.value;
-    secondsPassed = (duration.inSeconds % 60);
+    secondsPassed = duration.inSeconds;
     return '${duration.inMinutes}:${(duration.inSeconds % 60).toString().padLeft(2, '0')}';
   }
 
   void goToResultScreen() {
+    print("seconds passed " + secondsPassed.toString());
     Provider.of<GripCategoryData>(context, listen: false)
         .setSecondsDone(secondsPassed);
     Navigator.pushNamed(context, 'SetDoneScreen');
@@ -41,6 +42,7 @@ class _TimerScreenState extends State<TimerScreen>
     );
     controller.addListener(() {
       if (controller.isCompleted) {
+        print(timerString);
         goToResultScreen();
       }
     });

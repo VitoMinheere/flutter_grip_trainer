@@ -11,6 +11,7 @@ class GripCategoryData extends ChangeNotifier {
   ];
 
   GripCategory _currentCategory;
+  Level _currentLevel;
   int _secondsToPass;
   int _secondsDone;
 
@@ -32,6 +33,12 @@ class GripCategoryData extends ChangeNotifier {
   void setCurrentCategory(id) {
     _currentCategory = _gripCategories[id];
   }
+
+  void setCurrentLevel(Level currentLevel) {
+    _currentLevel = currentLevel;
+  }
+
+  Level get currentLevel => _currentLevel;
 
   GripCategory get currentGripCategory => _currentCategory;
 
@@ -86,8 +93,10 @@ class Level {
   }
 
   void updateSeconds(int seconds) {
-    if (seconds == this.secondsToPass) {
-      completeSet();
+    this.secondsDone = seconds;
+    if (seconds >= this.secondsToPass) {
+      //completeSet();
+      complete();
     }
   }
 }
