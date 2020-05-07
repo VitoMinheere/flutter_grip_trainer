@@ -61,6 +61,10 @@ class GripCategory {
 
   GripCategory({this.name, this.image, this.levels});
 
+  Map toJson() {
+    Map levels = this.levels != null ? this.levels.toJson() : null;
+  }
+
   int levelsCompleted() {
     int completed = 0;
     this.levels.forEach((level) {
@@ -82,6 +86,16 @@ class Level {
   int setsDone = 0;
   Exercise exercise;
   bool completed;
+
+  Map toJson() {
+    return {
+      'number': this.number,
+      'secondsToPass': this.secondsToPass,
+      'secondsDone': this.secondsDone,
+      'setsToPass': this.setsToPass,
+      'setsDone': this.setsDone,
+    };
+  }
 
   Level(
       {@required this.number,
