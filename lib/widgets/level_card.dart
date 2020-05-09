@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import 'package:grip_trainer/data/categories.dart';
 import 'package:provider/provider.dart';
 
 import 'package:grip_trainer/constants/theme.dart';
-import 'package:grip_trainer/data/categories.dart';
+import 'package:grip_trainer/data/level.dart';
+import 'package:grip_trainer/data/training_data.dart';
 
 class LevelCard extends StatelessWidget {
   final Level currentLevel;
@@ -15,13 +15,13 @@ class LevelCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Level currentLevel = this.currentLevel;
-    //Provider.of<GripCategoryData>(context, listen: false).currentLevel;
+    //Provider.of<TrainingData>(context, listen: false).currentLevel;
 
     return InkWell(
       onTap: () {
-        Provider.of<GripCategoryData>(context, listen: false)
+        Provider.of<TrainingData>(context, listen: false)
             .setCurrentLevel(currentLevel);
-        Provider.of<GripCategoryData>(context, listen: false)
+        Provider.of<TrainingData>(context, listen: false)
             .setSecondsToPass(currentLevel.secondsToPass);
 
         Navigator.pushNamed(context, 'TimerScreen');
@@ -42,7 +42,8 @@ class LevelCard extends StatelessWidget {
                     ],
                   ),
                   Text(
-                    currentLevel.exercise.name,
+                    'exercise',
+                    // currentLevel.exercise.name,
                     style: cardtext,
                   ),
                 ],
@@ -51,7 +52,7 @@ class LevelCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
                   Text(
-                    '${currentLevel.setsToPass}x ${currentLevel.secondsDone}/${currentLevel.secondsToPass}',
+                    '${currentLevel.setsToPass}x 10/${currentLevel.secondsToPass}',
                     style: cardtext,
                   ),
                   Icon(

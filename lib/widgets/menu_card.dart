@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
 
-import 'package:grip_trainer/data/categories.dart';
+import 'package:grip_trainer/data/category.dart';
 import 'package:grip_trainer/constants/theme.dart';
 
 class ExerciseCard extends StatelessWidget {
@@ -55,7 +55,7 @@ class ExerciseCard extends StatelessWidget {
                 Row(
                   children: <Widget>[
                     Text(
-                      '${category.levelsCompleted()}/${category.levels.length}',
+                      '${category.levelsCompleted}/${category.amountOfLevels}',
                       style: cardtext,
                     ),
                     Icon(Icons.trending_up, color: Colors.white)

@@ -1,12 +1,30 @@
 import 'package:flutter/material.dart';
 
 class Exercise {
+  int id;
   String name;
   String image;
   String explanation;
 
   Exercise(
-      {@required this.name, @required this.image, @required this.explanation});
+      {this.id,
+      @required this.name,
+      @required this.image,
+      @required this.explanation});
+
+  Map<String, dynamic> toMap() {
+    var map = <String, dynamic>{
+      'name': name,
+      'image': image,
+      'explanation': explanation,
+    };
+
+    if (id != null) {
+      map['id'] = id;
+    }
+
+    return map;
+  }
 }
 
 // Horizontal hang

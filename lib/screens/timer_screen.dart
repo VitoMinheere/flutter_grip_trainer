@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:math' as math;
 import 'package:provider/provider.dart';
 
-import 'package:grip_trainer/data/categories.dart';
+import 'package:grip_trainer/data/training_data.dart';
 import 'package:grip_trainer/constants/strings.dart' as StringConst;
 
 class TimerScreen extends StatefulWidget {
@@ -26,7 +26,7 @@ class _TimerScreenState extends State<TimerScreen>
 
   void goToResultScreen() {
     print("seconds passed " + secondsPassed.toString());
-    Provider.of<GripCategoryData>(context, listen: false)
+    Provider.of<TrainingData>(context, listen: false)
         .setSecondsDone(secondsPassed);
     Navigator.pushNamed(context, 'SetDoneScreen');
   }
@@ -35,7 +35,7 @@ class _TimerScreenState extends State<TimerScreen>
   void initState() {
     super.initState();
     _countdownTimer =
-        Provider.of<GripCategoryData>(context, listen: false).secondsToPass;
+        Provider.of<TrainingData>(context, listen: false).secondsToPass;
     controller = AnimationController(
       vsync: this,
       duration: Duration(seconds: _countdownTimer),

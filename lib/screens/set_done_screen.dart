@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
 
-import 'package:grip_trainer/data/categories.dart';
+import 'package:grip_trainer/data/training_data.dart';
+import 'package:grip_trainer/data/level.dart';
+
 import 'package:grip_trainer/constants/strings.dart' as StringConst;
 
 class SetDoneScreen extends StatefulWidget {
@@ -19,10 +21,10 @@ class _SetDoneScreenState extends State<SetDoneScreen> {
   @override
   void initState() {
     super.initState();
-    value = Provider.of<GripCategoryData>(context, listen: false).secondsDone;
+    value = Provider.of<TrainingData>(context, listen: false).secondsDone;
     print("set_done_Screen = " + value.toString());
     currentLevel =
-        Provider.of<GripCategoryData>(context, listen: false).currentLevel;
+        Provider.of<TrainingData>(context, listen: false).currentLevel;
   }
 
   @override
@@ -99,16 +101,16 @@ class _SetDoneScreenState extends State<SetDoneScreen> {
                     icon: null,
                     onPressed: () {
                       setState(() {
-                        value = Provider.of<GripCategoryData>(context,
-                                listen: false)
-                            .secondsDone;
+                        value =
+                            Provider.of<TrainingData>(context, listen: false)
+                                .secondsDone;
                       });
                     }),
                 FloatingActionButton.extended(
                   heroTag: null,
                   label: Text("Done"),
                   onPressed: () {
-                    Provider.of<GripCategoryData>(context, listen: false)
+                    Provider.of<TrainingData>(context, listen: false)
                         .finishSet(currentLevel, value);
                     Navigator.popUntil(
                         context, ModalRoute.withName('LevelsScreen'));

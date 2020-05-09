@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:grip_trainer/data/categories.dart';
+import 'package:grip_trainer/data/training_data.dart';
 import 'package:grip_trainer/widgets/menu_card.dart';
 
 class GripList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Consumer<GripCategoryData>(
+    return Consumer<TrainingData>(
       builder: (context, gripData, child) {
         return ListView.builder(
           itemBuilder: (context, index) {
