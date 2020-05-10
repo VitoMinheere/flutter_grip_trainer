@@ -12,7 +12,7 @@ class PersonalRecord {
   Map<String, dynamic> toMap() {
     var map = <String, dynamic>{
       'date': date,
-      'image': exerciseId,
+      'exercise_id': exerciseId,
       'seconds': seconds,
     };
 
@@ -20,5 +20,12 @@ class PersonalRecord {
       map['id'] = id;
     }
     return map;
+  }
+
+  PersonalRecord.fromMap(Map<String, dynamic> map) {
+    id = map['id'];
+    date = map['date'];
+    exerciseId = map['exercise_id'];
+    seconds = map['seconds'];
   }
 }

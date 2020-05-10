@@ -25,6 +25,13 @@ class Exercise {
 
     return map;
   }
+
+  Exercise.fromMap(Map<String, dynamic> map) {
+    id = map['id'];
+    name = map['name'];
+    image = map['image'];
+    explanation = map['explanation'];
+  }
 }
 
 // Horizontal hang

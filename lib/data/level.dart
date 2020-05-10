@@ -28,6 +28,16 @@ class Level {
     return map;
   }
 
+  Level.fromMap(Map<String, dynamic> map) {
+    id = map['id'];
+    categoryId = map['category_id'];
+    exerciseId = map['exercise_id'];
+    number = map['number'];
+    secondsToPass = map['seconds_to_pass'];
+    setsToPass = map['sets_to_pass'];
+    completed = map['completed'] == 1;
+  }
+
   Level(
       {this.id,
       @required this.categoryId,

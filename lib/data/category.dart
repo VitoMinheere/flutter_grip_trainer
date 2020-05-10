@@ -20,6 +20,12 @@ class GripCategory {
     return map;
   }
 
+  GripCategory.fromMap(Map<String, dynamic> map) {
+    id = map['id'];
+    name = map['name'];
+    image = map['image'];
+  }
+
   int get amountOfLevels => 8;
   int get levelsCompleted => 3;
 }
