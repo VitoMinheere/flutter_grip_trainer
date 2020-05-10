@@ -4,18 +4,19 @@ import 'package:provider/provider.dart';
 
 import 'package:grip_trainer/constants/theme.dart';
 import 'package:grip_trainer/data/level.dart';
+import 'package:grip_trainer/data/exercise.dart';
 import 'package:grip_trainer/data/training_data.dart';
 
 class LevelCard extends StatelessWidget {
   final Level currentLevel;
+  final Exercise exerciseForLevel;
 
-  LevelCard({@required this.currentLevel});
+  LevelCard({@required this.currentLevel, @required this.exerciseForLevel});
 
-  //TODO Load the currentlevel from the provider
   @override
   Widget build(BuildContext context) {
     Level currentLevel = this.currentLevel;
-    //Provider.of<TrainingData>(context, listen: false).currentLevel;
+    Exercise exerciseForLevel = this.exerciseForLevel;
 
     return InkWell(
       onTap: () {
@@ -42,8 +43,7 @@ class LevelCard extends StatelessWidget {
                     ],
                   ),
                   Text(
-                    'exercise',
-                    // currentLevel.exercise.name,
+                    exerciseForLevel.name,
                     style: cardtext,
                   ),
                 ],

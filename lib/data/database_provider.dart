@@ -1,6 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+
+import 'dart:typed_data';
+import 'dart:core';
+import 'package:flutter/services.dart';
 
 import 'package:grip_trainer/data/category.dart';
 import 'package:grip_trainer/data/level.dart';
@@ -8,7 +14,7 @@ import 'package:grip_trainer/data/exercise.dart';
 import 'package:grip_trainer/data/personal_record.dart';
 
 class DatabaseProvider {
-  static const String DB_NAME = 'grip_trainer';
+  static const String DB_NAME = 'test.db';
   static const String CATEGORY_TABLE = 'category';
   static const List<String> CATEGORY_COLUMNS = ['id', 'name', 'image'];
 
@@ -23,6 +29,12 @@ class DatabaseProvider {
   ];
 
   static const String EXERCISE_TABLE = 'exercise';
+  static const List<String> EXERCISE_COLUMNS = [
+    'id',
+    'name',
+    'image',
+    'explanation'
+  ];
 
   static const String PR_TABLE = 'personal_record';
 
@@ -42,38 +54,33 @@ class DatabaseProvider {
   }
 
   Future<Database> createDatabase() async {
-    String dbPath = await getDatabasesPath();
-    return await openDatabase(join(dbPath + DB_NAME), version: 1,
-        onCreate: (Database database, int version) async {
-      database.execute("CREATE TABLE $EXERCISE_TABLE ("
-          "id INTEGER PRIMARY KEY,"
-          "name TEXT,"
-          "image TEXT,"
-          "explanation TEXT"
-          ")");
+    var databasesPath = await getDatabasesPath();
+    var path = join(databasesPath, "test.db");
 
-      database.execute("CREATE TABLE $CATEGORY_TABLE ("
-          "id INTEGER PRIMARY KEY,"
-          "name TEXT,"
-          "image TEXT"
-          ")");
+    // Check if the database exists
+    var exists = await databaseExists(path);
 
-      database.execute("CREATE TABLE $LEVEL_TABLE ("
-          "id INTEGER PRIMARY KEY,"
-          "category_id INTEGER,"
-          "exercise_id INTEGER,"
-          "seconds_to_pass INTEGER,"
-          "sets_to_pass INTEGER,"
-          "completed INTEGER"
-          ")");
+    if (!exists) {
+      // Should happen only the first time you launch your application
+      print("Creating new copy from asset");
 
-      database.execute("CREATE TABLE $PR_TABLE ("
-          "id INTEGER PRIMARY KEY,"
-          "date DATETIME,"
-          "level_id TEXT,"
-          "seconds INTEGER"
-          ")");
-    });
+      // Make sure the parent directory exists
+      try {
+        await Directory(dirname(path)).create(recursive: true);
+      } catch (_) {}
+
+      // Copy from asset
+      ByteData data = await rootBundle.load(join("assets", "test.db"));
+      List<int> bytes =
+          data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+
+      // Write and flush the bytes written
+      await File(path).writeAsBytes(bytes, flush: true);
+    } else {
+      print("Opening existing database");
+    }
+    // open the database
+    return await openDatabase(path, readOnly: true);
   }
 
   Future<List<GripCategory>> getCategories() async {
@@ -91,6 +98,8 @@ class DatabaseProvider {
   }
 
   Future<List<Level>> getLevelsForCategory(categoryId) async {
+    print("Called function");
+
     final db = await database;
 
     var levels = await db.query(LEVEL_TABLE,
@@ -101,8 +110,21 @@ class DatabaseProvider {
       Level level = Level.fromMap(element);
       levelList.add(level);
     });
-    print(levelList);
     return levelList;
+  }
+
+  Future<List<Exercise>> getExercisesForLevels(List<int> levels) async {
+    final db = await database;
+
+    var exercises = await db.query(EXERCISE_TABLE,
+        columns: EXERCISE_COLUMNS, where: "id in (${levels.join(', ')})");
+    List<Exercise> exerciseList = List<Exercise>();
+
+    exercises.forEach((element) {
+      Exercise exercise = Exercise.fromMap(element);
+      exerciseList.add(exercise);
+    });
+    return exerciseList;
   }
 
   Future<PersonalRecord> insert(PersonalRecord pr) async {
