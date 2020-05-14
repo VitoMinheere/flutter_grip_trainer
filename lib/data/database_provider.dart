@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:flutter/foundation.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
@@ -55,7 +54,7 @@ class DatabaseProvider {
 
   Future<Database> createDatabase() async {
     var databasesPath = await getDatabasesPath();
-    var path = join(databasesPath, "test.db");
+    var path = join(databasesPath, "test_4.db");
 
     // Check if the database exists
     var exists = await databaseExists(path);
@@ -113,11 +112,11 @@ class DatabaseProvider {
     return levelList;
   }
 
-  Future<List<Exercise>> getExercisesForLevels(List<int> levels) async {
+  Future<List<Exercise>> getExercises(List<int> exerciseIds) async {
     final db = await database;
 
     var exercises = await db.query(EXERCISE_TABLE,
-        columns: EXERCISE_COLUMNS, where: "id in (${levels.join(', ')})");
+        columns: EXERCISE_COLUMNS, where: "id in (${exerciseIds.join(', ')})");
     List<Exercise> exerciseList = List<Exercise>();
 
     exercises.forEach((element) {

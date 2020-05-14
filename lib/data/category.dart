@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class GripCategory {
   int id;
   String name;
@@ -29,8 +27,3 @@ class GripCategory {
   int get amountOfLevels => 8;
   int get levelsCompleted => 3;
 }
-
-var horizontalHangGrip =
-    GripCategory(id: 1, name: "Horizontal Hang Grip", image: "");
-var verticalHangGrip =
-    GripCategory(id: 2, name: "Vertical Hang Grip", image: "");

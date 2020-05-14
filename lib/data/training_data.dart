@@ -5,10 +5,11 @@ import 'package:grip_trainer/data/category.dart';
 import 'package:grip_trainer/data/level.dart';
 
 class TrainingData extends ChangeNotifier {
-  List<GripCategory> _gripCategories = [
-    horizontalHangGrip,
-    verticalHangGrip,
-  ];
+  List<GripCategory> _gripCategories = [];
+
+  void setGripCategories(List categories) {
+    _gripCategories = categories;
+  }
 
   GripCategory _currentCategory;
   Level _currentLevel;
@@ -35,6 +36,7 @@ class TrainingData extends ChangeNotifier {
   }
 
   void setCurrentLevel(Level currentLevel) {
+    print("current level = " + currentLevel.id.toString());
     _currentLevel = currentLevel;
   }
 

@@ -22,18 +22,43 @@ class _LevelsScreenState extends State<LevelsScreen> {
   bool _loadingData = true;
   bool _showError = false;
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   loadLevels();
-  // }
-
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     if (_loadingData) {
       loadData();
     }
+  }
+
+  void loadData() async {
+    setState(() {
+      _loadingData = true;
+      _showError = false;
+    });
+    category =
+        Provider.of<TrainingData>(context, listen: true).currentGripCategory;
+    final _levels = await DatabaseProvider.db.getLevelsForCategory(category.id);
+
+    //TODO drops the last exercise which has the same exercise id as the one before it
+    List<int> exerciseIds =
+        _levels.map((m) => m.exerciseId).toList().toSet().toList();
+    print(exerciseIds);
+    final exercises = await DatabaseProvider.db.getExercises(exerciseIds);
+    for (var x in exercises) {
+      print(x.name);
+    }
+    setState(() {
+      if (_levels == null) {
+        _showError = true;
+        _loadingData = false;
+      } else {
+        levels = _levels;
+        exercisesForLevels = exercises;
+        print(exercisesForLevels.length);
+        _showError = false;
+        _loadingData = false;
+      }
+    });
   }
 
   @override
@@ -78,7 +103,7 @@ class _LevelsScreenState extends State<LevelsScreen> {
         child: Container(
           child: ListView.builder(
             shrinkWrap: true,
-            itemCount: levels.length,
+            itemCount: exercisesForLevels.length,
             itemBuilder: (context, index) => LevelCard(
               currentLevel: levels[index],
               exerciseForLevel: exercisesForLevels[index],
@@ -87,29 +112,5 @@ class _LevelsScreenState extends State<LevelsScreen> {
         ),
       ),
     );
-  }
-
-  void loadData() async {
-    print("Called loadlevels");
-    setState(() {
-      _loadingData = true;
-      _showError = false;
-    });
-    category =
-        Provider.of<TrainingData>(context, listen: true).currentGripCategory;
-    final _levels = await DatabaseProvider.db.getLevelsForCategory(category.id);
-    List<int> levelIds = _levels.map((m) => m.id).toList();
-    final exercises = await DatabaseProvider.db.getExercisesForLevels(levelIds);
-    setState(() {
-      if (_levels == null) {
-        _showError = true;
-        _loadingData = false;
-      } else {
-        levels = _levels;
-        exercisesForLevels = exercises;
-        _showError = false;
-        _loadingData = false;
-      }
-    });
   }
 }

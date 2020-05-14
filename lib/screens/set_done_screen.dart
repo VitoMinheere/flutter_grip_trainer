@@ -42,7 +42,7 @@ class _SetDoneScreenState extends State<SetDoneScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                ArrowIconButton(
+                arrowIconButton(
                   iconData: Icons.keyboard_arrow_up,
                   onTap: () {
                     setState(() {
@@ -50,7 +50,7 @@ class _SetDoneScreenState extends State<SetDoneScreen> {
                     });
                   },
                 ),
-                ArrowIconButton(
+                arrowIconButton(
                   iconData: Icons.keyboard_arrow_up,
                   onTap: () {
                     setState(() {
@@ -68,7 +68,7 @@ class _SetDoneScreenState extends State<SetDoneScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                ArrowIconButton(
+                arrowIconButton(
                   iconData: Icons.keyboard_arrow_down,
                   onTap: () {
                     setState(
@@ -80,7 +80,7 @@ class _SetDoneScreenState extends State<SetDoneScreen> {
                     );
                   },
                 ),
-                ArrowIconButton(
+                arrowIconButton(
                   iconData: Icons.keyboard_arrow_down,
                   onTap: () {
                     setState(() {
@@ -126,7 +126,7 @@ class _SetDoneScreenState extends State<SetDoneScreen> {
   }
 }
 
-Widget ArrowIconButton({IconData iconData, Function onTap}) {
+Widget arrowIconButton({IconData iconData, Function onTap}) {
   return IconButton(
     alignment: Alignment.center,
     iconSize: 80,
