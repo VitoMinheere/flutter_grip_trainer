@@ -21,9 +21,7 @@ class DatabaseProvider {
   static const List<String> LEVEL_COLUMNS = [
     'id',
     'category_id',
-    'exercise_id',
     'seconds_to_pass',
-    'sets_to_pass',
     'completed'
   ];
 
@@ -32,10 +30,17 @@ class DatabaseProvider {
     'id',
     'name',
     'image',
-    'explanation'
+    'explanation',
+    'level_id',
   ];
 
-  static const String PR_TABLE = 'personal_record';
+  static const String PERSONAL_RECORD_TABLE = 'personal_record';
+  static const List<String> PERSONAL_RECORD_COLUMNS = [
+    'id',
+    'exercise_id',
+    'seconds_done',
+    'date',
+  ];
 
   DatabaseProvider._();
   static final DatabaseProvider db = DatabaseProvider._();
@@ -54,7 +59,7 @@ class DatabaseProvider {
 
   Future<Database> createDatabase() async {
     var databasesPath = await getDatabasesPath();
-    var path = join(databasesPath, "test_4.db");
+    var path = join(databasesPath, "test_02.db");
 
     // Check if the database exists
     var exists = await databaseExists(path);
@@ -69,7 +74,7 @@ class DatabaseProvider {
       } catch (_) {}
 
       // Copy from asset
-      ByteData data = await rootBundle.load(join("assets", "test.db"));
+      ByteData data = await rootBundle.load(join("assets", "grip_trainer.db"));
       List<int> bytes =
           data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
 
@@ -97,8 +102,6 @@ class DatabaseProvider {
   }
 
   Future<List<Level>> getLevelsForCategory(categoryId) async {
-    print("Called function");
-
     final db = await database;
 
     var levels = await db.query(LEVEL_TABLE,
@@ -112,11 +115,12 @@ class DatabaseProvider {
     return levelList;
   }
 
-  Future<List<Exercise>> getExercises(List<int> exerciseIds) async {
+  Future<List<Exercise>> getExercisesForLevel(List<int> levelIds) async {
     final db = await database;
 
     var exercises = await db.query(EXERCISE_TABLE,
-        columns: EXERCISE_COLUMNS, where: "id in (${exerciseIds.join(', ')})");
+        columns: EXERCISE_COLUMNS,
+        where: "level_id in (${levelIds.join(', ')})");
     List<Exercise> exerciseList = List<Exercise>();
 
     exercises.forEach((element) {
@@ -126,9 +130,25 @@ class DatabaseProvider {
     return exerciseList;
   }
 
+  Future<List<PersonalRecord>> getPersonalRecordsForExercise(
+      List<int> exerciseIds) async {
+    final db = await database;
+
+    var personalRecords = await db.query(PERSONAL_RECORD_TABLE,
+        columns: PERSONAL_RECORD_COLUMNS,
+        where: "exercise_id in (${exerciseIds.join(', ')})");
+    List<PersonalRecord> recordsList = List<PersonalRecord>();
+
+    personalRecords.forEach((element) {
+      PersonalRecord pr = PersonalRecord.fromMap(element);
+      recordsList.add(pr);
+    });
+    return recordsList;
+  }
+
   Future<PersonalRecord> insert(PersonalRecord pr) async {
     final db = await database;
-    pr.id = await db.insert(PR_TABLE, pr.toMap());
+    pr.id = await db.insert(PERSONAL_RECORD_TABLE, pr.toMap());
     return pr;
   }
 }

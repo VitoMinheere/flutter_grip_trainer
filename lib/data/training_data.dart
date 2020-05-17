@@ -15,6 +15,7 @@ class TrainingData extends ChangeNotifier {
   Level _currentLevel;
   int _secondsToPass;
   int _secondsDone;
+  int _currentRecord;
 
   UnmodifiableListView<GripCategory> get categories =>
       UnmodifiableListView(_gripCategories);
@@ -36,7 +37,6 @@ class TrainingData extends ChangeNotifier {
   }
 
   void setCurrentLevel(Level currentLevel) {
-    print("current level = " + currentLevel.id.toString());
     _currentLevel = currentLevel;
   }
 
@@ -46,19 +46,11 @@ class TrainingData extends ChangeNotifier {
 
   int get amountOfCategories => _gripCategories.length;
 
-  // int amountOfLevels() {
-  //   return _currentCategory.levels.length;
-  // }
+  void setCurrentRecord(int seconds) {
+    _currentRecord = seconds;
+  }
 
-  // int levelsCompleted() {
-  //   int completed = 0;
-  //   this.levels.forEach((level) {
-  //     if (level.completed) {
-  //       completed++;
-  //     }
-  //   });
-  //   return completed;
-  // }
+  int get currentRecord => _currentRecord;
 
   void finishSet(Level level, int seconds) {
     level.updateSeconds(seconds);

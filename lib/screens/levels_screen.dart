@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:grip_trainer/data/level.dart';
+import 'package:grip_trainer/data/personal_record.dart';
 import 'package:grip_trainer/widgets/level_card.dart';
 
 import 'package:grip_trainer/data/training_data.dart';
@@ -19,6 +20,7 @@ class _LevelsScreenState extends State<LevelsScreen> {
   GripCategory category;
   List<Level> levels;
   List<Exercise> exercisesForLevels;
+  List<PersonalRecord> personalRecords;
   bool _loadingData = true;
   bool _showError = false;
 
@@ -39,22 +41,22 @@ class _LevelsScreenState extends State<LevelsScreen> {
         Provider.of<TrainingData>(context, listen: true).currentGripCategory;
     final _levels = await DatabaseProvider.db.getLevelsForCategory(category.id);
 
-    //TODO drops the last exercise which has the same exercise id as the one before it
+    List<int> levelIds = _levels.map((m) => m.id).toList().toSet().toList();
+    final _exercises = await DatabaseProvider.db.getExercisesForLevel(levelIds);
+
     List<int> exerciseIds =
-        _levels.map((m) => m.exerciseId).toList().toSet().toList();
-    print(exerciseIds);
-    final exercises = await DatabaseProvider.db.getExercises(exerciseIds);
-    for (var x in exercises) {
-      print(x.name);
-    }
+        _exercises.map((m) => m.id).toList().toSet().toList();
+    final _personalRecords =
+        await DatabaseProvider.db.getPersonalRecordsForExercise(exerciseIds);
+
     setState(() {
       if (_levels == null) {
         _showError = true;
         _loadingData = false;
       } else {
         levels = _levels;
-        exercisesForLevels = exercises;
-        print(exercisesForLevels.length);
+        exercisesForLevels = _exercises;
+        personalRecords = _personalRecords;
         _showError = false;
         _loadingData = false;
       }
@@ -107,6 +109,7 @@ class _LevelsScreenState extends State<LevelsScreen> {
             itemBuilder: (context, index) => LevelCard(
               currentLevel: levels[index],
               exerciseForLevel: exercisesForLevels[index],
+              recordForLevel: personalRecords[index],
             ), //category.levels[index]),
           ),
         ),

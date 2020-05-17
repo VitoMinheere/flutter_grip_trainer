@@ -13,7 +13,7 @@ class PersonalRecord {
     var map = <String, dynamic>{
       'date': date,
       'exercise_id': exerciseId,
-      'seconds': seconds,
+      'seconds_done': seconds,
     };
 
     if (id != null) {
@@ -24,8 +24,8 @@ class PersonalRecord {
 
   PersonalRecord.fromMap(Map<String, dynamic> map) {
     id = map['id'];
-    date = map['date'];
+    date = DateTime.parse(map['date']);
     exerciseId = map['exercise_id'];
-    seconds = map['seconds'];
+    seconds = map['seconds_done'];
   }
 }
