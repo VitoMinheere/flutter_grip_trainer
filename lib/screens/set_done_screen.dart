@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:grip_trainer/screens/levels_screen.dart';
+import 'package:grip_trainer/screens/menu_screen.dart';
 
 import 'package:provider/provider.dart';
 
@@ -22,7 +24,6 @@ class _SetDoneScreenState extends State<SetDoneScreen> {
   void initState() {
     super.initState();
     value = Provider.of<TrainingData>(context, listen: false).secondsDone;
-    print("set_done_Screen = " + value.toString());
     currentLevel =
         Provider.of<TrainingData>(context, listen: false).currentLevel;
   }
@@ -55,7 +56,6 @@ class _SetDoneScreenState extends State<SetDoneScreen> {
                   onTap: () {
                     setState(() {
                       value = value + 1;
-                      print("value = " + value.toString());
                     });
                   },
                 ),
@@ -112,9 +112,8 @@ class _SetDoneScreenState extends State<SetDoneScreen> {
                   onPressed: () {
                     Provider.of<TrainingData>(context, listen: false)
                         .finishSet(currentLevel, value);
-                    Navigator.popUntil(
-                        context, ModalRoute.withName('LevelsScreen'));
-                    // Navigator.popAndPushNamed(context, 'LevelsScreen');
+                    Navigator.pushNamedAndRemoveUntil(context, LevelsScreen.id,
+                        ModalRoute.withName(MenuScreen.id));
                   },
                 ),
               ],

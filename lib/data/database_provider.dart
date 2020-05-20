@@ -59,10 +59,11 @@ class DatabaseProvider {
 
   Future<Database> createDatabase() async {
     var databasesPath = await getDatabasesPath();
-    var path = join(databasesPath, "test_02.db");
+    var path = join(databasesPath, "test_05.db");
 
     // Check if the database exists
     var exists = await databaseExists(path);
+    // var exists = false;
 
     if (!exists) {
       // Should happen only the first time you launch your application
@@ -84,7 +85,7 @@ class DatabaseProvider {
       print("Opening existing database");
     }
     // open the database
-    return await openDatabase(path, readOnly: true);
+    return await openDatabase(path, readOnly: false);
   }
 
   Future<List<GripCategory>> getCategories() async {
@@ -146,7 +147,7 @@ class DatabaseProvider {
     return recordsList;
   }
 
-  Future<PersonalRecord> insert(PersonalRecord pr) async {
+  Future<PersonalRecord> insertRecord(PersonalRecord pr) async {
     final db = await database;
     pr.id = await db.insert(PERSONAL_RECORD_TABLE, pr.toMap());
     return pr;

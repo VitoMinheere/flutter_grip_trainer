@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 
 class PersonalRecord {
   int id;
-  DateTime date = DateTime.now();
+  DateTime date;
   int exerciseId;
   int seconds;
 
-  PersonalRecord(
-      {this.id, this.date, @required this.exerciseId, @required this.seconds});
+  PersonalRecord({this.id, @required this.exerciseId, @required this.seconds})
+      : this.date = DateTime.now();
 
   Map<String, dynamic> toMap() {
     var map = <String, dynamic>{
-      'date': date,
+      'date': date.toString(),
       'exercise_id': exerciseId,
       'seconds_done': seconds,
     };

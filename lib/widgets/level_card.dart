@@ -31,7 +31,9 @@ class LevelCard extends StatelessWidget {
         Provider.of<TrainingData>(context, listen: false)
             .setSecondsToPass(currentLevel.secondsToPass);
         Provider.of<TrainingData>(context, listen: false)
-            .setCurrentRecord(recordForLevel.seconds);
+            .setCurrentExercise(exerciseForLevel);
+        Provider.of<TrainingData>(context, listen: false)
+            .setCurrentRecord(recordForLevel);
 
         Navigator.pushNamed(context, 'TimerScreen');
       },

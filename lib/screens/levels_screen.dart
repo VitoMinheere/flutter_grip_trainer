@@ -109,7 +109,11 @@ class _LevelsScreenState extends State<LevelsScreen> {
             itemBuilder: (context, index) => LevelCard(
               currentLevel: levels[index],
               exerciseForLevel: exercisesForLevels[index],
-              recordForLevel: personalRecords[index],
+              // TODO Get the right and latest PR for exercise
+              recordForLevel: index < personalRecords.length
+                  ? personalRecords[index]
+                  : PersonalRecord(
+                      exerciseId: exercisesForLevels[index].id, seconds: 0),
             ), //category.levels[index]),
           ),
         ),

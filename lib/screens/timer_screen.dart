@@ -26,6 +26,7 @@ class _TimerScreenState extends State<TimerScreen>
 
   void goToResultScreen() {
     print("seconds passed " + secondsPassed.toString());
+    controller.dispose();
     Provider.of<TrainingData>(context, listen: false)
         .setSecondsDone(secondsPassed);
     Navigator.pushNamed(context, 'SetDoneScreen');

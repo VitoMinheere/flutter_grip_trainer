@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'dart:collection';
 
 import 'package:grip_trainer/data/category.dart';
+import 'package:grip_trainer/data/exercise.dart';
 import 'package:grip_trainer/data/level.dart';
+import 'package:grip_trainer/data/database_provider.dart';
+import 'package:grip_trainer/data/personal_record.dart';
 
 class TrainingData extends ChangeNotifier {
   List<GripCategory> _gripCategories = [];
@@ -13,9 +16,11 @@ class TrainingData extends ChangeNotifier {
 
   GripCategory _currentCategory;
   Level _currentLevel;
+  PersonalRecord _currentRecord;
+  Exercise _currentExercise;
+
   int _secondsToPass;
   int _secondsDone;
-  int _currentRecord;
 
   UnmodifiableListView<GripCategory> get categories =>
       UnmodifiableListView(_gripCategories);
@@ -46,13 +51,27 @@ class TrainingData extends ChangeNotifier {
 
   int get amountOfCategories => _gripCategories.length;
 
-  void setCurrentRecord(int seconds) {
-    _currentRecord = seconds;
+  void setCurrentRecord(PersonalRecord pr) {
+    // _currentRecord.exerciseId = _current
+    _currentRecord = pr;
   }
 
-  int get currentRecord => _currentRecord;
+  PersonalRecord get currentRecord => _currentRecord;
+
+  void setCurrentExercise(Exercise currentExercise) {
+    _currentExercise = currentExercise;
+  }
+
+  Exercise get currentExercise => _currentExercise;
 
   void finishSet(Level level, int seconds) {
+    if (seconds > _currentRecord.seconds) {
+      var newRecord =
+          PersonalRecord(exerciseId: _currentExercise.id, seconds: seconds);
+      print(newRecord.date);
+      DatabaseProvider.db.insertRecord(newRecord);
+      this.setCurrentRecord(newRecord);
+    }
     level.updateSeconds(seconds);
     notifyListeners();
   }
