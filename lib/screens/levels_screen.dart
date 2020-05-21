@@ -106,15 +106,18 @@ class _LevelsScreenState extends State<LevelsScreen> {
           child: ListView.builder(
             shrinkWrap: true,
             itemCount: exercisesForLevels.length,
-            itemBuilder: (context, index) => LevelCard(
-              currentLevel: levels[index],
-              exerciseForLevel: exercisesForLevels[index],
-              // TODO Get the right and latest PR for exercise
-              recordForLevel: index < personalRecords.length
-                  ? personalRecords[index]
-                  : PersonalRecord(
-                      exerciseId: exercisesForLevels[index].id, seconds: 0),
-            ), //category.levels[index]),
+            itemBuilder: (context, index) {
+              // const levelPR = exercisesForLevels[index].id
+              return LevelCard(
+                currentLevel: levels[index],
+                exerciseForLevel: exercisesForLevels[index],
+                // TODO Get the right and latest PR for exercise
+                recordForLevel: index < personalRecords.length
+                    ? personalRecords[index]
+                    : PersonalRecord(
+                        exerciseId: exercisesForLevels[index].id, seconds: 0),
+              );
+            }, //category.levels[index]),
           ),
         ),
       ),

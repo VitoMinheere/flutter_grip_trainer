@@ -135,12 +135,12 @@ class DatabaseProvider {
       List<int> exerciseIds) async {
     final db = await database;
 
-    var personalRecords = await db.query(PERSONAL_RECORD_TABLE,
-        columns: PERSONAL_RECORD_COLUMNS,
-        where: "exercise_id in (${exerciseIds.join(', ')})");
+    var personalRecords = await db.rawQuery(
+        'select pr.id, pr.date, pr.seconds_done, pr.exercise_id FROM $PERSONAL_RECORD_TABLE pr inner join (select exercise_id, max(id) as MaxId from $PERSONAL_RECORD_TABLE group by exercise_id) tm on pr.exercise_id = tm.exercise_id and pr.id = tm.MaxId WHERE pr.exercise_id in (${exerciseIds.join(', ')})');
     List<PersonalRecord> recordsList = List<PersonalRecord>();
 
     personalRecords.forEach((element) {
+      print(element);
       PersonalRecord pr = PersonalRecord.fromMap(element);
       recordsList.add(pr);
     });
