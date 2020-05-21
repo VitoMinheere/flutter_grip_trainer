@@ -18,9 +18,7 @@ class LevelsScreen extends StatefulWidget {
 
 class _LevelsScreenState extends State<LevelsScreen> {
   GripCategory category;
-  List<Level> levels;
-  List<Exercise> exercisesForLevels;
-  List<PersonalRecord> personalRecords;
+  List<Map> levels = List<Map>();
   bool _loadingData = true;
   bool _showError = false;
 
@@ -49,14 +47,30 @@ class _LevelsScreenState extends State<LevelsScreen> {
     final _personalRecords =
         await DatabaseProvider.db.getPersonalRecordsForExercise(exerciseIds);
 
+    for (var i = 0; i < _levels.length; i++) {
+      var item = Map();
+      item['level'] = _levels[i];
+      item['exercise'] = _exercises[i];
+
+      var pr = _personalRecords
+          .where((record) => record.exerciseId == _exercises[i].id);
+      if (pr.length == 1) {
+        item['record'] = pr.first;
+      } else {
+        item['record'] =
+            PersonalRecord(exerciseId: _exercises[i].id, seconds: 0);
+      }
+      levels.insert(i, item);
+    }
+
     setState(() {
       if (_levels == null) {
         _showError = true;
         _loadingData = false;
       } else {
-        levels = _levels;
-        exercisesForLevels = _exercises;
-        personalRecords = _personalRecords;
+        // levels = _levels;
+        // exercisesForLevels = _exercises;
+        // personalRecords = _personalRecords;
         _showError = false;
         _loadingData = false;
       }
@@ -105,17 +119,12 @@ class _LevelsScreenState extends State<LevelsScreen> {
         child: Container(
           child: ListView.builder(
             shrinkWrap: true,
-            itemCount: exercisesForLevels.length,
+            itemCount: levels.length,
             itemBuilder: (context, index) {
-              // const levelPR = exercisesForLevels[index].id
               return LevelCard(
-                currentLevel: levels[index],
-                exerciseForLevel: exercisesForLevels[index],
-                // TODO Get the right and latest PR for exercise
-                recordForLevel: index < personalRecords.length
-                    ? personalRecords[index]
-                    : PersonalRecord(
-                        exerciseId: exercisesForLevels[index].id, seconds: 0),
+                currentLevel: levels[index]['level'],
+                exerciseForLevel: levels[index]['exercise'],
+                recordForLevel: levels[index]['record'],
               );
             }, //category.levels[index]),
           ),

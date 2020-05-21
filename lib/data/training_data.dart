@@ -68,8 +68,8 @@ class TrainingData extends ChangeNotifier {
     if (seconds > _currentRecord.seconds) {
       var newRecord =
           PersonalRecord(exerciseId: _currentExercise.id, seconds: seconds);
-      print(newRecord.date);
       DatabaseProvider.db.insertRecord(newRecord);
+
       this.setCurrentRecord(newRecord);
     }
     level.updateSeconds(seconds);

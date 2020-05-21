@@ -140,7 +140,6 @@ class DatabaseProvider {
     List<PersonalRecord> recordsList = List<PersonalRecord>();
 
     personalRecords.forEach((element) {
-      print(element);
       PersonalRecord pr = PersonalRecord.fromMap(element);
       recordsList.add(pr);
     });
