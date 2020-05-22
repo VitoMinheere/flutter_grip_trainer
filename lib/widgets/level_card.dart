@@ -52,24 +52,30 @@ class LevelCard extends StatelessWidget {
                       Checkbox(value: currentLevel.completed, onChanged: null),
                     ],
                   ),
-                  Text(
-                    exerciseForLevel.name,
-                    style: cardtext,
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      exerciseForLevel.name,
+                      style: cardtext,
+                    ),
                   ),
                 ],
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  Text(
-                    '${recordForLevel.seconds}/${currentLevel.secondsToPass}',
-                    style: cardtext,
-                  ),
-                  Icon(
-                    Icons.hourglass_empty,
-                    color: Colors.white,
-                  )
-                ],
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    Text(
+                      '${recordForLevel.seconds}/${currentLevel.secondsToPass}',
+                      style: cardtext,
+                    ),
+                    Icon(
+                      Icons.hourglass_empty,
+                      color: Colors.white,
+                    )
+                  ],
+                ),
               )
             ],
           )),

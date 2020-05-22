@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:grip_trainer/data/level.dart';
 import 'package:grip_trainer/data/personal_record.dart';
 import 'package:grip_trainer/widgets/level_card.dart';
 
 import 'package:grip_trainer/data/training_data.dart';
 import 'package:grip_trainer/data/category.dart';
-import 'package:grip_trainer/data/exercise.dart';
 import 'package:grip_trainer/data/database_provider.dart';
 import 'package:provider/provider.dart';
 
