@@ -6,12 +6,12 @@ import 'package:grip_trainer/screens/levels_screen.dart';
 import 'package:grip_trainer/screens/timer_screen.dart';
 import 'package:grip_trainer/screens/set_done_screen.dart';
 
-import 'package:grip_trainer/data/categories.dart';
+import 'package:grip_trainer/data/training_data.dart';
 
 void main() {
   runApp(
     ChangeNotifierProvider(
-      create: (context) => GripCategoryData(),
+      create: (context) => TrainingData(),
       child: MyApp(),
     ),
   );

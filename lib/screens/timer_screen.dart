@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'dart:math' as math;
 import 'package:provider/provider.dart';
 
-import 'package:grip_trainer/data/categories.dart';
+import 'package:audioplayers/audio_cache.dart';
+import 'package:audioplayers/audioplayers.dart';
+
+import 'package:grip_trainer/data/training_data.dart';
 import 'package:grip_trainer/constants/strings.dart' as StringConst;
 
 class TimerScreen extends StatefulWidget {
@@ -17,6 +20,33 @@ class _TimerScreenState extends State<TimerScreen>
   int _countdownTimer;
   AnimationController controller;
   int secondsPassed;
+  bool audioIsPlaying = false;
+
+  AudioPlayer advancedPlayer;
+  AudioCache audioCache;
+
+  @override
+  void initState() {
+    super.initState();
+    this.initPlayer();
+    _countdownTimer =
+        Provider.of<TrainingData>(context, listen: false).secondsToPass;
+    controller = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: _countdownTimer),
+    );
+    controller.addListener(() {
+      if (controller.isCompleted) {
+        advancedPlayer.stop();
+        goToResultScreen();
+      }
+    });
+  }
+
+  void initPlayer() {
+    advancedPlayer = AudioPlayer();
+    audioCache = AudioCache(fixedPlayer: advancedPlayer);
+  }
 
   String get timerString {
     Duration duration = controller.duration * controller.value;
@@ -25,27 +55,10 @@ class _TimerScreenState extends State<TimerScreen>
   }
 
   void goToResultScreen() {
-    print("seconds passed " + secondsPassed.toString());
-    Provider.of<GripCategoryData>(context, listen: false)
+    controller.dispose();
+    Provider.of<TrainingData>(context, listen: false)
         .setSecondsDone(secondsPassed);
     Navigator.pushNamed(context, 'SetDoneScreen');
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _countdownTimer =
-        Provider.of<GripCategoryData>(context, listen: false).secondsToPass;
-    controller = AnimationController(
-      vsync: this,
-      duration: Duration(seconds: _countdownTimer),
-    );
-    controller.addListener(() {
-      if (controller.isCompleted) {
-        print(timerString);
-        goToResultScreen();
-      }
-    });
   }
 
   @override
@@ -129,7 +142,15 @@ class _TimerScreenState extends State<TimerScreen>
                                     onPressed: () {
                                       if (controller.isAnimating) {
                                         controller.stop();
+                                        advancedPlayer.pause();
                                       } else {
+                                        if (!audioIsPlaying) {
+                                          audioCache
+                                              .play('bensound-highoctane.mp3');
+                                          audioIsPlaying = true;
+                                        } else {
+                                          advancedPlayer.resume();
+                                        }
                                         controller.forward(
                                             from: controller.value == 1.0
                                                 ? 0.0
@@ -147,6 +168,7 @@ class _TimerScreenState extends State<TimerScreen>
                             FloatingActionButton.extended(
                               heroTag: null,
                               onPressed: () {
+                                advancedPlayer.stop();
                                 goToResultScreen();
                               },
                               icon: Icon(Icons.stop),

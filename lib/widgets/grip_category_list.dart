@@ -1,13 +1,47 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:grip_trainer/data/categories.dart';
+import 'package:grip_trainer/data/training_data.dart';
 import 'package:grip_trainer/widgets/menu_card.dart';
 
-class GripList extends StatelessWidget {
+import 'package:grip_trainer/data/database_provider.dart';
+
+class GripList extends StatefulWidget {
+  @override
+  _GripListState createState() => _GripListState();
+}
+
+class _GripListState extends State<GripList> {
+  bool _loadingData;
+
+  @override
+  void initState() {
+    super.initState();
+    loadGripCategories();
+  }
+
+  void loadGripCategories() async {
+    setState(() {
+      _loadingData = true;
+      // _showError = false;
+    });
+    List gripCategories = await DatabaseProvider.db.getCategories();
+    setState(() {
+      if (gripCategories == null) {
+        // _showError = true;
+        _loadingData = false;
+      } else {
+        Provider.of<TrainingData>(context, listen: false)
+            .setGripCategories(gripCategories);
+        // _showError = false;
+        _loadingData = false;
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Consumer<GripCategoryData>(
+    return Consumer<TrainingData>(
       builder: (context, gripData, child) {
         return ListView.builder(
           itemBuilder: (context, index) {
