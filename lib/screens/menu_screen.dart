@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:grip_trainer/widgets/grip_category_list.dart';
+import 'package:grip_trainer/widgets/options_drawer.dart';
 
 import 'package:grip_trainer/constants/strings.dart' as StringConst;
 
@@ -16,6 +17,7 @@ class MenuScreen extends StatelessWidget {
       body: Container(
         child: GripList(),
       ),
+      drawer: OptionsDrawer(),
     );
   }
 }
