@@ -42,6 +42,8 @@ flutter:
     - assets/test.db
     - assets/grip_trainer.db
     - assets/bensound-highoctane.mp3
+    - assets/bensound-badass.mp3
+    - assets/bensound-epic.mp3
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

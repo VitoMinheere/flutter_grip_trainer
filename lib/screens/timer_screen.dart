@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:grip_trainer/data/training_data.dart';
 import 'package:grip_trainer/constants/strings.dart' as StringConst;
@@ -25,6 +26,9 @@ class _TimerScreenState extends State<TimerScreen>
   AudioPlayer advancedPlayer;
   AudioCache audioCache;
 
+  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  SharedPreferences prefs;
+
   @override
   void initState() {
     super.initState();
@@ -43,7 +47,8 @@ class _TimerScreenState extends State<TimerScreen>
     });
   }
 
-  void initPlayer() {
+  void initPlayer() async {
+    prefs = await _prefs;
     advancedPlayer = AudioPlayer();
     audioCache = AudioCache(fixedPlayer: advancedPlayer);
   }
@@ -145,8 +150,8 @@ class _TimerScreenState extends State<TimerScreen>
                                         advancedPlayer.pause();
                                       } else {
                                         if (!audioIsPlaying) {
-                                          audioCache
-                                              .play('bensound-highoctane.mp3');
+                                          audioCache.play(
+                                              prefs.getString('trackFileName'));
                                           audioIsPlaying = true;
                                         } else {
                                           advancedPlayer.resume();

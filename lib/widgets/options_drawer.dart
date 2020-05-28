@@ -12,6 +12,7 @@ class _OptionsDrawerState extends State<OptionsDrawer> {
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   SharedPreferences prefs;
   Options options = Options();
+  bool _loadingData = true;
 
   @override
   void initState() {
@@ -21,19 +22,27 @@ class _OptionsDrawerState extends State<OptionsDrawer> {
 
   @override
   Widget build(BuildContext context) {
+    if (_loadingData)
+      return Drawer(
+        child: CircularProgressIndicator(),
+      );
     return Drawer(
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 100),
+        padding: const EdgeInsets.symmetric(vertical: 80),
         child: Column(
           children: <Widget>[
             Text('PreTimer seconds'),
-            Row(
+            Column(
+              mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 for (var item in options.preTimerOptions) preTimerButton(item)
               ],
             ),
             Text('Music'),
-            // TODO Return music selections as radio buttons
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [for (var track in options.music) trackButton(track)],
+            )
           ],
         ),
       ),
@@ -41,10 +50,10 @@ class _OptionsDrawerState extends State<OptionsDrawer> {
   }
 
   Widget preTimerButton(int seconds) {
-    var selected = prefs.getInt('preTimer');
+    int selected = prefs.containsKey('preTimer') ? prefs.getInt('preTimer') : 3;
 
-    return Expanded(
-      flex: 5,
+    return Flexible(
+      fit: FlexFit.loose,
       child: FlatButton(
           color: selected == seconds ? Colors.lightBlue : Colors.grey,
           onPressed: () {
@@ -57,9 +66,35 @@ class _OptionsDrawerState extends State<OptionsDrawer> {
   }
 
   void getPrefs() async {
+    setState(() {
+      _loadingData = true;
+    });
     var result = await _prefs;
     setState(() {
-      prefs = result;
+      if (result != null) {
+        _loadingData = false;
+        prefs = result;
+      }
     });
+  }
+
+  Widget trackButton(track) {
+    String selected =
+        prefs.containsKey('track') ? prefs.getString('track') : 'None';
+
+    return Flexible(
+      fit: FlexFit.loose,
+      // flex: 5,
+      child: FlatButton(
+        color: selected == track.title ? Colors.lightBlue : Colors.grey,
+        onPressed: () {
+          setState(() {
+            prefs.setString('track', track.title);
+            prefs.setString('trackFileName', track.fileName);
+          });
+        },
+        child: Text(track.title),
+      ),
+    );
   }
 }
