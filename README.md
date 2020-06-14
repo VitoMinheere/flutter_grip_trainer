@@ -153,6 +153,7 @@ Distributed under the GNU/GPL v3 License. See `LICENSE` for more information.
 * [Convict Conditioning 2](https://www.amazon.com/Convict-Conditioning-Advanced-Training-Bulletproof-ebook/dp/B0097AMVXS/)
 * [Shields](https://shields.io)
 * [Bensound](https://www.bensound.com/)
+* [Freesound](https://freesound.org/)
 * [Choose an Open Source License](https://choosealicense.com)
 * [Timer Countdown Widget](https://medium.com/flutterdevs/creating-a-countdown-timer-using-animation-in-flutter-2d56d4f3f5f1)
 * [GitHub Pages](https://pages.github.com)
