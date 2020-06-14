@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 import 'package:provider/provider.dart';
+import 'dart:async';
 
 import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
@@ -20,8 +21,10 @@ class _TimerScreenState extends State<TimerScreen>
     with TickerProviderStateMixin {
   int _countdownTimer;
   AnimationController controller;
+  Timer _timer;
   int secondsPassed;
   bool audioIsPlaying = false;
+  bool preTimerDone = false;
 
   AudioPlayer advancedPlayer;
   AudioCache audioCache;
@@ -57,6 +60,46 @@ class _TimerScreenState extends State<TimerScreen>
     Duration duration = controller.duration * controller.value;
     secondsPassed = duration.inSeconds;
     return '${duration.inMinutes}:${(duration.inSeconds % 60).toString().padLeft(2, '0')}';
+  }
+
+  void startTimer() {
+    const oneSec = const Duration(seconds: 1);
+    int _start = 5 -1;
+    _timer = new Timer.periodic(
+      oneSec,
+      (Timer timer) => setState(
+        () {
+          if (_start < 1) {
+            audioCache.play('3_beeps.wav');
+            timer.cancel();
+            preTimerDone = true;
+            toggleCountdown();
+          } else {
+            audioCache.play('1_beep.wav');
+            _start -= 1;
+          }
+        },
+      ),
+    );
+  }
+
+  void toggleCountdown(){
+    if (controller.isAnimating) {
+      controller.stop();
+      advancedPlayer.pause();
+    } else {
+      if (!audioIsPlaying) {
+        audioCache.play(
+            prefs.getString('trackFileName'));
+        audioIsPlaying = true;
+      } else {
+        advancedPlayer.resume();
+      }
+      controller.forward(
+          from: controller.value == 1.0
+              ? 0.0
+              : controller.value);
+      }
   }
 
   void goToResultScreen() {
@@ -145,21 +188,10 @@ class _TimerScreenState extends State<TimerScreen>
                                 builder: (context, child) {
                                   return FloatingActionButton.extended(
                                     onPressed: () {
-                                      if (controller.isAnimating) {
-                                        controller.stop();
-                                        advancedPlayer.pause();
+                                      if (preTimerDone) {
+                                        toggleCountdown();
                                       } else {
-                                        if (!audioIsPlaying) {
-                                          audioCache.play(
-                                              prefs.getString('trackFileName'));
-                                          audioIsPlaying = true;
-                                        } else {
-                                          advancedPlayer.resume();
-                                        }
-                                        controller.forward(
-                                            from: controller.value == 1.0
-                                                ? 0.0
-                                                : controller.value);
+                                        startTimer();
                                       }
                                     },
                                     icon: Icon(controller.isAnimating
