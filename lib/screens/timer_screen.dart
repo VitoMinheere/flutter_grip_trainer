@@ -53,6 +53,8 @@ class _TimerScreenState extends State<TimerScreen>
   void initPlayer() async {
     prefs = await _prefs;
     advancedPlayer = AudioPlayer();
+    // TODO Remove debugging
+    AudioPlayer.logEnabled = true;
     audioCache = AudioCache(fixedPlayer: advancedPlayer);
   }
 
@@ -64,15 +66,16 @@ class _TimerScreenState extends State<TimerScreen>
 
   void startTimer() {
     const oneSec = const Duration(seconds: 1);
-    int _start = 5 -1;
+    int _start = (prefs.getInt('preTimer') ?? 3);
     _timer = new Timer.periodic(
       oneSec,
       (Timer timer) => setState(
         () {
           if (_start < 1) {
-            audioCache.play('3_beeps.wav');
             timer.cancel();
             preTimerDone = true;
+            // audioCache.play('3_beeps.wav');
+            // audioCache.clear('3_beeps.wav');
             toggleCountdown();
           } else {
             audioCache.play('1_beep.wav');
