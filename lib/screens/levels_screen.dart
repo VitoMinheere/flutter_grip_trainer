@@ -108,23 +108,37 @@ class _LevelsScreenState extends State<LevelsScreen> {
         ],
       ));
     }
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(category.name),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Container(
-          child: ListView.builder(
-            shrinkWrap: true,
-            itemCount: levels.length,
-            itemBuilder: (context, index) {
-              return LevelCard(
-                currentLevel: levels[index]['level'],
-                exerciseForLevel: levels[index]['exercise'],
-                recordForLevel: levels[index]['record'],
-              );
-            }, //category.levels[index]),
+    return WillPopScope(
+      onWillPop: () {
+        print(
+            'Backbutton pressed (device or appbar button), do whatever you want.');
+
+        //trigger leaving and use own data
+        Navigator.pop(context, () {
+          setState(() {});
+        });
+
+        //we need to return a future
+        return Future.value(true);
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(category.name),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Container(
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: levels.length,
+              itemBuilder: (context, index) {
+                return LevelCard(
+                  currentLevel: levels[index]['level'],
+                  exerciseForLevel: levels[index]['exercise'],
+                  recordForLevel: levels[index]['record'],
+                );
+              }, //category.levels[index]),
+            ),
           ),
         ),
       ),
