@@ -2,6 +2,8 @@ class GripCategory {
   int id;
   String name;
   String image;
+  int amountOfLevels;
+  int levelsCompleted;
 
   GripCategory({this.id, this.name, this.image});
 
@@ -24,6 +26,13 @@ class GripCategory {
     image = map['image'];
   }
 
-  int get amountOfLevels => 8;
-  int get levelsCompleted => 3;
+  void setAmountOfLevels(int levels) {
+    this.amountOfLevels = levels;
+  }
+
+  void setLevelsCompleted(int completed) {
+    if (completed <= this.amountOfLevels) {
+      this.levelsCompleted = completed;
+    }
+  }
 }

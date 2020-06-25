@@ -116,6 +116,21 @@ class DatabaseProvider {
     return levelList;
   }
 
+  Future<List<Level>> getCompletedLevelsForCategory(categoryId) async {
+    final db = await database;
+
+    var levels = await db.query(LEVEL_TABLE,
+        columns: LEVEL_COLUMNS,
+        where: "category_id = $categoryId AND completed = 1");
+    List<Level> levelList = List<Level>();
+
+    levels.forEach((element) {
+      Level level = Level.fromMap(element);
+      levelList.add(level);
+    });
+    return levelList;
+  }
+
   Future<List<Exercise>> getExercisesForLevel(List<int> levelIds) async {
     final db = await database;
 
@@ -150,5 +165,10 @@ class DatabaseProvider {
     final db = await database;
     pr.id = await db.insert(PERSONAL_RECORD_TABLE, pr.toMap());
     return pr;
+  }
+
+  void setLevelComplete(int levelId) async {
+    final db = await database;
+    db.rawUpdate("UPDATE $LEVEL_TABLE SET completed = 1 WHERE id = $levelId");
   }
 }
