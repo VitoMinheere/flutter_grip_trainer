@@ -54,7 +54,6 @@ class TrainingData extends ChangeNotifier {
   int get amountOfCategories => _gripCategories.length;
 
   void setCurrentRecord(PersonalRecord pr) {
-    // _currentRecord.exerciseId = _current
     _currentRecord = pr;
   }
 
@@ -75,9 +74,7 @@ class TrainingData extends ChangeNotifier {
       this.setCurrentRecord(newRecord);
     }
     level.updateSeconds(seconds);
-    print(level);
     if (level.completed) {
-      print("update level completed");
       DatabaseProvider.db.setLevelComplete(level.id);
     }
     notifyListeners();
