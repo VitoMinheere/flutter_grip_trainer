@@ -111,6 +111,13 @@ class _LevelsScreenState extends State<LevelsScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(category.name),
+        leading: IconButton(
+          icon: Icon(
+            Icons.chevron_left,
+            size: 42,
+          ),
+          onPressed: () => Navigator.pop(context, true),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -124,7 +131,7 @@ class _LevelsScreenState extends State<LevelsScreen> {
                 exerciseForLevel: levels[index]['exercise'],
                 recordForLevel: levels[index]['record'],
               );
-            }, //category.levels[index]),
+            },
           ),
         ),
       ),

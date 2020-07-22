@@ -6,6 +6,8 @@ import 'package:grip_trainer/widgets/menu_card.dart';
 
 import 'package:grip_trainer/data/database_provider.dart';
 
+import '../data/category.dart';
+
 class GripList extends StatefulWidget {
   @override
   _GripListState createState() => _GripListState();
@@ -26,6 +28,13 @@ class _GripListState extends State<GripList> {
       // _showError = false;
     });
     List gripCategories = await DatabaseProvider.db.getCategories();
+    for (GripCategory cat in gripCategories) {
+      var levels = await DatabaseProvider.db.getLevelsForCategory(cat.id);
+      cat.setAmountOfLevels(levels.length);
+      var completed =
+          await DatabaseProvider.db.getCompletedLevelsForCategory(cat.id);
+      cat.setLevelsCompleted(completed.length);
+    }
     setState(() {
       if (gripCategories == null) {
         // _showError = true;
@@ -48,12 +57,16 @@ class _GripListState extends State<GripList> {
             final gripCategory = gripData.categories[index];
             return ExerciseCard(
               category: gripCategory,
-              currentLevel: 3,
+              currentLevel: gripCategory.levelsCompleted,
               icon: Icons.thumb_up,
               colour: Colors.grey[800],
               onPress: () {
                 gripData.setCurrentCategory(index);
-                Navigator.pushNamed(context, 'LevelsScreen');
+                Navigator.pushNamed(context, 'LevelsScreen').then((value) {
+                  if (value) {
+                    loadGripCategories();
+                  }
+                });
               },
             );
           },

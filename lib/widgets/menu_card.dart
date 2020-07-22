@@ -61,20 +61,6 @@ class ExerciseCard extends StatelessWidget {
                     Icon(Icons.trending_up, color: Colors.white)
                   ],
                 ),
-                // Row(
-                //   children: <Widget>[
-                //     Text(
-                //       "0/" +
-                //           category.levels[currentLevel - 1].secondsToPass
-                //               .toString(),
-                //       style: cardtext,
-                //     ),
-                //     Icon(
-                //       Icons.hourglass_empty,
-                //       color: Colors.white,
-                //     )
-                //   ],
-                // )
               ],
             )
           ],

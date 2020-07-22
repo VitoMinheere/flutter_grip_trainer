@@ -53,8 +53,6 @@ class _TimerScreenState extends State<TimerScreen>
   void initPlayer() async {
     prefs = await _prefs;
     advancedPlayer = AudioPlayer();
-    // TODO Remove debugging
-    AudioPlayer.logEnabled = true;
     audioCache = AudioCache(fixedPlayer: advancedPlayer);
   }
 
@@ -86,23 +84,20 @@ class _TimerScreenState extends State<TimerScreen>
     );
   }
 
-  void toggleCountdown(){
+  void toggleCountdown() {
     if (controller.isAnimating) {
       controller.stop();
       advancedPlayer.pause();
     } else {
       if (!audioIsPlaying) {
-        audioCache.play(
-            prefs.getString('trackFileName'));
+        audioCache.play(prefs.getString('trackFileName'));
         audioIsPlaying = true;
       } else {
         advancedPlayer.resume();
       }
       controller.forward(
-          from: controller.value == 1.0
-              ? 0.0
-              : controller.value);
-      }
+          from: controller.value == 1.0 ? 0.0 : controller.value);
+    }
   }
 
   void goToResultScreen() {

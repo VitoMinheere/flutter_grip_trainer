@@ -7,6 +7,8 @@ import 'package:grip_trainer/data/level.dart';
 import 'package:grip_trainer/data/database_provider.dart';
 import 'package:grip_trainer/data/personal_record.dart';
 
+import 'database_provider.dart';
+
 class TrainingData extends ChangeNotifier {
   List<GripCategory> _gripCategories = [];
 
@@ -52,7 +54,6 @@ class TrainingData extends ChangeNotifier {
   int get amountOfCategories => _gripCategories.length;
 
   void setCurrentRecord(PersonalRecord pr) {
-    // _currentRecord.exerciseId = _current
     _currentRecord = pr;
   }
 
@@ -73,6 +74,11 @@ class TrainingData extends ChangeNotifier {
       this.setCurrentRecord(newRecord);
     }
     level.updateSeconds(seconds);
+    if (level.completed) {
+      DatabaseProvider.db.setLevelComplete(level.id);
+      // Fake update the levelsCompleted value
+      _currentCategory.levelsCompleted += 1;
+    }
     notifyListeners();
   }
 }
