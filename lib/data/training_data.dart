@@ -76,6 +76,8 @@ class TrainingData extends ChangeNotifier {
     level.updateSeconds(seconds);
     if (level.completed) {
       DatabaseProvider.db.setLevelComplete(level.id);
+      // Fake update the levelsCompleted value
+      _currentCategory.levelsCompleted += 1;
     }
     notifyListeners();
   }

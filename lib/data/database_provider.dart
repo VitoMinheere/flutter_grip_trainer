@@ -59,16 +59,13 @@ class DatabaseProvider {
 
   Future<Database> createDatabase() async {
     var databasesPath = await getDatabasesPath();
-    var path = join(databasesPath, "test_05.db");
+    var path = join(databasesPath, "test_06.db");
 
     // Check if the database exists
     var exists = await databaseExists(path);
     // var exists = false;
 
     if (!exists) {
-      // Should happen only the first time you launch your application
-      print("Creating new copy from asset");
-
       // Make sure the parent directory exists
       try {
         await Directory(dirname(path)).create(recursive: true);
@@ -81,8 +78,6 @@ class DatabaseProvider {
 
       // Write and flush the bytes written
       await File(path).writeAsBytes(bytes, flush: true);
-    } else {
-      print("Opening existing database");
     }
     // open the database
     return await openDatabase(path, readOnly: false);
@@ -128,6 +123,7 @@ class DatabaseProvider {
       Level level = Level.fromMap(element);
       levelList.add(level);
     });
+    print(levelList.length);
     return levelList;
   }
 

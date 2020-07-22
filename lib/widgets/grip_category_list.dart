@@ -18,7 +18,6 @@ class _GripListState extends State<GripList> {
 
   @override
   void initState() {
-    print("Called initState");
     super.initState();
     loadGripCategories();
   }
@@ -34,7 +33,6 @@ class _GripListState extends State<GripList> {
       cat.setAmountOfLevels(levels.length);
       var completed =
           await DatabaseProvider.db.getCompletedLevelsForCategory(cat.id);
-      print(completed.length);
       cat.setLevelsCompleted(completed.length);
     }
     setState(() {
@@ -64,7 +62,11 @@ class _GripListState extends State<GripList> {
               colour: Colors.grey[800],
               onPress: () {
                 gripData.setCurrentCategory(index);
-                Navigator.pushNamed(context, 'LevelsScreen');
+                Navigator.pushNamed(context, 'LevelsScreen').then((value) {
+                  if (value) {
+                    loadGripCategories();
+                  }
+                });
               },
             );
           },
