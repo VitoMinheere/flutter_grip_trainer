@@ -72,8 +72,6 @@ class _TimerScreenState extends State<TimerScreen>
           if (_start < 1) {
             timer.cancel();
             preTimerDone = true;
-            // audioCache.play('3_beeps.wav');
-            // audioCache.clear('3_beeps.wav');
             toggleCountdown();
           } else {
             audioCache.play('1_beep.wav');
@@ -138,80 +136,67 @@ class _TimerScreenState extends State<TimerScreen>
                           alignment: FractionalOffset.center,
                           child: AspectRatio(
                             aspectRatio: 1.0,
-                            child: Stack(
-                              children: <Widget>[
-                                Positioned.fill(
-                                  child: CustomPaint(
-                                      painter: CustomTimerPainter(
-                                    animation: controller,
-                                    backgroundColor: Colors.white,
-                                    color: themeData.indicatorColor,
-                                  )),
-                                ),
-                                Align(
-                                  alignment: FractionalOffset.center,
-                                  child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: <Widget>[
-                                      Text(
-                                        StringConst.COUNTDOWN_TIMER,
-                                        style: TextStyle(
-                                            fontSize: 20.0,
-                                            color: Colors.white),
-                                      ),
-                                      Text(
-                                        timerString,
-                                        style: TextStyle(
-                                            fontSize: 112.0,
-                                            color: Colors.white),
-                                      ),
-                                    ],
+                            child: GestureDetector(
+                              onTap: () {
+                                if (preTimerDone) {
+                                  toggleCountdown();
+                                } else {
+                                  startTimer();
+                                }
+                              },
+                              child: Stack(
+                                children: <Widget>[
+                                  Positioned.fill(
+                                    child: CustomPaint(
+                                        painter: CustomTimerPainter(
+                                      animation: controller,
+                                      backgroundColor: Colors.white,
+                                      color: themeData.indicatorColor,
+                                    )),
                                   ),
-                                ),
-                              ],
+                                  Align(
+                                    alignment: FractionalOffset.center,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: <Widget>[
+                                        Text(
+                                          StringConst.COUNTDOWN_TIMER,
+                                          style: TextStyle(
+                                              fontSize: 20.0,
+                                              color: Colors.white),
+                                        ),
+                                        controller.isAnimating
+                                            ? Text("")
+                                            : Text("Press in Circle!",
+                                                style: TextStyle(
+                                                    color: Colors.white)),
+                                        Text(
+                                          timerString,
+                                          style: TextStyle(
+                                              fontSize: 112.0,
+                                              color: Colors.white),
+                                        ),
+                                        FloatingActionButton.extended(
+                                          heroTag: null,
+                                          onPressed: () {
+                                            advancedPlayer.stop();
+                                            goToResultScreen();
+                                          },
+                                          icon: Icon(Icons.stop),
+                                          label: Text(StringConst.STOP),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
                       ),
-                      Container(
-                        margin: EdgeInsets.all(15),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: <Widget>[
-                            AnimatedBuilder(
-                                animation: controller,
-                                builder: (context, child) {
-                                  return FloatingActionButton.extended(
-                                    onPressed: () {
-                                      if (preTimerDone) {
-                                        toggleCountdown();
-                                      } else {
-                                        startTimer();
-                                      }
-                                    },
-                                    icon: Icon(controller.isAnimating
-                                        ? Icons.pause
-                                        : Icons.play_arrow),
-                                    label: Text(controller.isAnimating
-                                        ? StringConst.PAUSE
-                                        : StringConst.PLAY),
-                                  );
-                                }),
-                            FloatingActionButton.extended(
-                              heroTag: null,
-                              onPressed: () {
-                                advancedPlayer.stop();
-                                goToResultScreen();
-                              },
-                              icon: Icon(Icons.stop),
-                              label: Text(StringConst.STOP),
-                            ),
-                          ],
-                        ),
-                      )
                     ],
                   ),
                 ),
