@@ -30,7 +30,7 @@
 <br />
 <p align="center">
   <a href="https://github.com/VitoMinheere/flutter_grip_trainer">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+    <img src="assets/logo.jpg" alt="Logo" width="80" height="80">
   </a>
 
   <h3 align="center">Flutter grip trainer</h3>
@@ -70,11 +70,9 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
-
 Strengthen your grip without the need for weights or exercise machines. All you need is a pull up bar, a hoprizontal bar(or something to put under your legs for the pull up bar) and towels.
 
-The progressions are taken form the book Convict Conditioning 2. I wanted a simple way of tracking my progression without having to write it down everytime. 
+The progressions are taken form the book Convict Conditioning 2. I wanted a simple way of tracking my progression without having to write it down everytime.
 
 All data is stored locally on the device in an SQLite database. No connection is made to the internet and no permissions are necessary.
 
@@ -105,7 +103,7 @@ pub get
 
 ### Installation
 
-No need to load anything to test the application. The used data is in `assets/grip_trainer.db`. 
+No need to load anything to test the application. The used data is in `assets/grip_trainer.db`.
 When you run the app and there is no associated db file on the phone, this file will be used and moved to the OS standard path.
 
 If you mess up the data in your db, simply remove the db file from your device or change the db name in `lib/data/database_provider`
@@ -164,13 +162,13 @@ Distributed under the GNU/GPL v3 License. See `LICENSE` for more information.
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 <!-- [contributors-shield]: https://img.shields.io/github/contributors/othneildrew/Best-README-Template.svg?style=flat-square -->
 <!-- [contributors-url]: https://github.com/VitoMinheere/flutter_grip_trainer/graphs/contributors -->
-[forks-shield]: https://img.shields.io/github/forks/VitoMinheere/flutter_grip_trainer 
+[forks-shield]: https://img.shields.io/github/forks/VitoMinheere/flutter_grip_trainer
 [forks-url]: https://github.com/VitoMinheere/flutter_grip_trainer/network/members
-[stars-shield]: https://img.shields.io/github/stars/VitoMinheere/flutter_grip_trainer 
+[stars-shield]: https://img.shields.io/github/stars/VitoMinheere/flutter_grip_trainer
 [stars-url]: https://github.com/VitoMinheere/flutter_grip_trainer/stargazers
-[issues-shield]: https://img.shields.io/github/issues/VitoMinheere/flutter_grip_trainer 
+[issues-shield]: https://img.shields.io/github/issues/VitoMinheere/flutter_grip_trainer
 [issues-url]: https://github.com/VitoMinheere/flutter_grip_trainer/issues
-[license-shield]: https://img.shields.io/github/license/VitoMinheere/flutter_grip_trainer 
+[license-shield]: https://img.shields.io/github/license/VitoMinheere/flutter_grip_trainer
 [license-url]: https://github.com/VitoMinheere/flutter_grip_trainer/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=flat-square&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/vitominheere
