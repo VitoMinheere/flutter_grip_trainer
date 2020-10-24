@@ -30,7 +30,7 @@
 <br />
 <p align="center">
   <a href="https://github.com/VitoMinheere/flutter_grip_trainer">
-    <img src="assets/logo.jpg" alt="Logo" width="80" height="80">
+    <img src="assets/logo.jpg" alt="Logo" width="200" height="200">
   </a>
 
   <h3 align="center">Flutter grip trainer</h3>
