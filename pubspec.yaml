@@ -27,7 +27,6 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/test.db
     - assets/grip_trainer.db
     - assets/bensound-highoctane.mp3
     - assets/bensound-badass.mp3

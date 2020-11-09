@@ -6,7 +6,7 @@ import 'package:grip_trainer/widgets/menu_card.dart';
 
 import 'package:grip_trainer/data/database_provider.dart';
 
-import '../data/category.dart';
+import 'package:grip_trainer/data/category.dart';
 
 class GripList extends StatefulWidget {
   @override

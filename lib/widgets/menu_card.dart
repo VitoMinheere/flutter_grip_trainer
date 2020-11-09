@@ -50,13 +50,13 @@ class ExerciseCard extends StatelessWidget {
               children: <Widget>[
                 Text(
                   category.name,
-                  style: cardtext,
+                  style: cardText,
                 ),
                 Row(
                   children: <Widget>[
                     Text(
                       '${category.levelsCompleted}/${category.amountOfLevels}',
-                      style: cardtext,
+                      style: cardText,
                     ),
                     Icon(Icons.trending_up, color: Colors.white)
                   ],
