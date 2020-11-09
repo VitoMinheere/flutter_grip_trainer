@@ -21,7 +21,6 @@ class _TimerScreenState extends State<TimerScreen>
     with TickerProviderStateMixin {
   int _countdownTimer;
   AnimationController controller;
-  Timer _timer;
   int secondsPassed;
   bool audioIsPlaying = false;
   bool preTimerDone = false;
@@ -65,7 +64,7 @@ class _TimerScreenState extends State<TimerScreen>
   void startTimer() {
     const oneSec = const Duration(seconds: 1);
     int _start = (prefs.getInt('preTimer') ?? 3);
-    _timer = new Timer.periodic(
+    new Timer.periodic(
       oneSec,
       (Timer timer) => setState(
         () {

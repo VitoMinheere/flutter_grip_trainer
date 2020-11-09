@@ -123,7 +123,6 @@ class DatabaseProvider {
       Level level = Level.fromMap(element);
       levelList.add(level);
     });
-    print(levelList.length);
     return levelList;
   }
 

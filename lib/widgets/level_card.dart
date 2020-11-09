@@ -8,7 +8,7 @@ import 'package:grip_trainer/data/level.dart';
 import 'package:grip_trainer/data/exercise.dart';
 import 'package:grip_trainer/data/training_data.dart';
 
-class LevelCard extends StatelessWidget {
+class LevelCard extends StatefulWidget {
   final Level currentLevel;
   final Exercise exerciseForLevel;
   final PersonalRecord recordForLevel;
@@ -19,56 +19,88 @@ class LevelCard extends StatelessWidget {
       this.recordForLevel});
 
   @override
+  _LevelCardState createState() => _LevelCardState();
+}
+
+class _LevelCardState extends State<LevelCard> {
+  bool showExplanation = false;
+
+  @override
   Widget build(BuildContext context) {
-    Level currentLevel = this.currentLevel;
-    Exercise exerciseForLevel = this.exerciseForLevel;
-    PersonalRecord recordForLevel = this.recordForLevel;
+    Level currentLevel = this.widget.currentLevel;
+    Exercise exerciseForLevel = this.widget.exerciseForLevel;
+    PersonalRecord recordForLevel = this.widget.recordForLevel;
+
+    void goToExercise() {
+      Provider.of<TrainingData>(context, listen: false)
+          .setCurrentLevel(currentLevel);
+      Provider.of<TrainingData>(context, listen: false)
+          .setSecondsToPass(currentLevel.secondsToPass);
+      Provider.of<TrainingData>(context, listen: false)
+          .setCurrentExercise(exerciseForLevel);
+      Provider.of<TrainingData>(context, listen: false)
+          .setCurrentRecord(recordForLevel);
+
+      Navigator.pushNamed(context, 'TimerScreen');
+    }
 
     return InkWell(
       onTap: () {
-        Provider.of<TrainingData>(context, listen: false)
-            .setCurrentLevel(currentLevel);
-        Provider.of<TrainingData>(context, listen: false)
-            .setSecondsToPass(currentLevel.secondsToPass);
-        Provider.of<TrainingData>(context, listen: false)
-            .setCurrentExercise(exerciseForLevel);
-        Provider.of<TrainingData>(context, listen: false)
-            .setCurrentRecord(recordForLevel);
-
-        Navigator.pushNamed(context, 'TimerScreen');
+        setState(() {
+          showExplanation = !showExplanation;
+        });
       },
       child: Card(
-          color: Colors.grey[600],
+          color: Colors.grey[500],
           child: Column(
             children: <Widget>[
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      // Text(currentLevel.number.toString()),
-                      //Icon(Icons.check_box_outline_blank),
-                      Checkbox(value: currentLevel.completed, onChanged: null),
-                    ],
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
+                  Checkbox(value: currentLevel.completed, onChanged: null),
+                  Flexible(
                     child: Text(
                       exerciseForLevel.name,
-                      style: cardtext,
+                      style: cardText,
+                    ),
+                  ),
+                  RawMaterialButton(
+                    onPressed: () => goToExercise(),
+                    elevation: 2.0,
+                    fillColor: Colors.blue,
+                    child: Icon(
+                      Icons.arrow_forward_ios,
+                      size: 15.0,
+                      color: Colors.white,
+                    ),
+                    padding: EdgeInsets.all(15.0),
+                    shape: CircleBorder(),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Flexible(
+                    child: Visibility(
+                      visible: showExplanation,
+                      child: Text(
+                        exerciseForLevel.explanation,
+                        style: explanationText,
+                        textAlign: TextAlign.center,
+                      ),
                     ),
                   ),
                 ],
               ),
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: EdgeInsets.all(8.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
                     Text(
                       '${recordForLevel.seconds}/${currentLevel.secondsToPass}',
-                      style: cardtext,
+                      style: cardText,
                     ),
                     Icon(
                       Icons.hourglass_empty,
