@@ -59,7 +59,7 @@ class DatabaseProvider {
 
   Future<Database> createDatabase() async {
     var databasesPath = await getDatabasesPath();
-    var path = join(databasesPath, "test_06.db");
+    var path = join(databasesPath, "test_07.db");
 
     // Check if the database exists
     var exists = await databaseExists(path);
